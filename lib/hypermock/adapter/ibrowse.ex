@@ -35,10 +35,6 @@ defmodule HyperMock.Adapter.IBrowse do
     normalize([url, headers, method]) ++ [to_string(body)]
   end
 
-  defp normalize([url, headers, method, body]) do
-    normalize([url, headers, method]) ++ [to_string(body)]
-  end
-
   defp normalize([url, headers, method, body, _options]) do
     normalize([url, headers, method, body])
   end
