@@ -3,17 +3,12 @@ defmodule HyperMock do
     adapter = opts[:adapter] || HyperMock.Adapter.IBrowse
 
     quote do
-      import unquote(__MODULE__)
-
       :application.start(unquote(adapter).target_module)
-
-      def adapter do
-        unquote(adapter)
-      end
+      @adapter unquote(adapter)
     end
   end
 
-  def stub_request(request, response \\ %HyperMock.Request{}) do
+  def stub_request(request, response \\ %HyperMock.Response{}) do
     HyperMock.Registry.put request, response
   end
 
@@ -32,8 +27,8 @@ defmodule HyperMock do
       alias HyperMock.Response
       alias HyperMock.Registry
 
-      for {fun, imp} <- adapter.request_functions do
-        :meck.expect(adapter.target_module, fun, imp)
+      for {fun, imp} <- @adapter.request_functions do
+        :meck.expect(@adapter.target_module, fun, imp)
       end
 
       Registry.start_link
@@ -43,7 +38,7 @@ defmodule HyperMock do
 
         verify_expectations
       after
-        :meck.unload adapter.target_module
+        :meck.unload @adapter.target_module
         Registry.stop
       end
     end
