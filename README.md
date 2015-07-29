@@ -7,6 +7,8 @@ if a matching request was not found in the stubbed requests.
 The idea is to provide tools to explicitly verify properties of the actual request
 rather than loose stubbing to return canned responses in your tests.
 
+Unused stubs in your tests will also raise errors.
+
 ```elixir
 defmodule RequestTest do
   use HyperMock
